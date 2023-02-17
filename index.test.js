@@ -54,25 +54,6 @@ describe('Band and Musician Models', () => {
     })
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     test('can create a Musician', async () => {
         // TODO - test creating a musician
         const testMusician = await Musician.create({
@@ -83,4 +64,26 @@ describe('Band and Musician Models', () => {
         expect(testMusician.name).toBe('Drake');
         expect(testMusician.instrument).toBe('drums');
     })
+
+    test('can update a Musician', async () => {
+        const testMusician = await Musician.create({name: 'Druggy', instrument: 'drugs'});
+
+        await testMusician.update({instrument: 'more dRUGS'});
+        const updatedMusician = await Musician.findByPk(testMusician.id);
+
+        expect(updatedMusician.name).toBe('Druggy');
+        expect(updatedMusician.instrument).toBe('more dRUGS');
+    })
+
+    test('can delete a Musician', async () => {
+        const testMusician = await Musician.create({name: 'Six Six', instrument: 'guns'});
+
+        let deletedMusician = await Musician.findByPk(testMusician.id);
+        expect(deletedMusician).not.toBeNull();
+
+        await Musician.destroy({where: {id: testMusician.id}});
+        deletedMusician  = await Musician.findByPk(testMusician.id);
+        expect(deletedMusician).toBeNull();
+    })
+
 })
